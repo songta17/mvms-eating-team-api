@@ -5,14 +5,18 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+ZIPCODE_LIST = (75001..75020).to_a
+
 User.destroy_all
+JwtDenylist.destroy_all
 
 user = User.new(
   email: "kipo.cto@gmail.com",
   password: "Azerty77"
 )
 
-# binding.pry
+# # binding.pry
 
 if user.valid? 
   user.save
@@ -20,3 +24,77 @@ if user.valid?
 else
   puts user.errors
 end
+
+# User.destroy_all
+Restaurant.destroy_all
+
+puts "-----------------------"
+puts "-------- USERS --------"
+puts "-----------------------"
+
+users = (1..5).map do
+  email = Faker::Internet.email
+  puts "User email: #{email}"
+  user = User.new(
+    email: email,
+    password: "Azerty11"
+  )
+  if user.valid?
+    user.save
+    puts "#{email} created!"
+  else
+    puts "#{email} can't be created - #{email.errors }!"
+  end
+end
+
+puts "-----------------------"
+puts "----- RESTAURANTS -----"
+puts "-----------------------"
+
+restaurants = (1..200).map do
+  name = Faker::Restaurant.name
+  restaurant = Restaurant.new(
+    name: name,
+    user_id: User.all.sample.id
+  )
+  if restaurant.valid?
+    restaurant.save
+    puts "#{restaurant.name} created!"
+  else
+    puts "#{restaurant.name} can't be created - #{restaurant.errors }!"
+  end
+  # puts "#{restaurant.name} was created!" if restaurant.valid?
+end
+
+puts "-----------------------"
+puts "------ ADDRESSES ------"
+puts "-----------------------"
+
+first_restaurant = Restaurant.first.id
+addresses = (1..200).map do
+  address = Address.new(
+    street: Faker::Address.street_name,
+    zipcode: ZIPCODE_LIST.sample,
+    town: Faker::Address.city,
+    country: Faker::Address.country,
+    restaurant_id: first_restaurant
+  )
+  if address.valid?
+    address.save
+    puts "restaurant address created!"
+    first_restaurant += 1
+  else
+    puts "------------------"
+    puts "#{address.valid?}"
+    puts "------------------"
+    puts "ERROR restaurant address - #{address.errors}
+    
+      zipcode: #{address.errors["zipcode"] } - #{address.zipcode} / 
+      street:  #{address.errors["street"] } - #{address.street} / 
+      town:  #{address.errors["town"] } - #{address.town} /
+      country  #{address.errors["country"] } - #{address.country} !"
+  end
+end
+
+puts Restaurant.all.count
+puts Address.all.count

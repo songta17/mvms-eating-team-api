@@ -1,8 +1,14 @@
 Rails.application.routes.draw do
-  devise_for :users
+  resources :addresses
+  devise_for :users,
+             controllers: {
+                 sessions: 'users/sessions',
+                 registrations: 'users/registrations'
+             }
   namespace :api do
     namespace :v1 do
-      # resources :users
+      resources :restaurants
+      resources :addresses 
     end
   end
 end
