@@ -1,1 +1,1 @@
-worker bundle exec puma -p ${PORT:-3000}
+worker bundle exec puma -C config/puma.rb
