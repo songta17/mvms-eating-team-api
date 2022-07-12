@@ -9,7 +9,7 @@ module Api
         @addresses = Address.all.includes(:restaurant)
         @addresses = @addresses.filter_by_country(params[:country]) if params[:country].present?
         @addresses = @addresses.filter_by_zipcode(params[:zipcode]) if params[:zipcode].present?
-        @addresses = @addresses.filter_by_country(params[:town]) if params[:town].present?
+        @addresses = @addresses.filter_by_town(params[:town]) if params[:town].present?
         @addresses = @addresses.order(created_at: params[:order] || "asc").offset(params[:offset] || 0).limit(params[:limit] || 5)
         render json: {
           code: 200,
