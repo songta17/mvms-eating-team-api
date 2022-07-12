@@ -10,6 +10,8 @@ ZIPCODE_LIST = (75001..75020).to_a
 
 User.destroy_all
 JwtDenylist.destroy_all
+Restaurant.destroy_all
+Address.destroy_all
 
 user = User.new(
   email: "kipo.cto@gmail.com",
@@ -25,8 +27,6 @@ else
   puts user.errors
 end
 
-# User.destroy_all
-Restaurant.destroy_all
 
 puts "-----------------------"
 puts "-------- USERS --------"
