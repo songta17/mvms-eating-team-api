@@ -6,8 +6,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-ZIPCODE_LIST = (75001..75020).to_a
-
 User.destroy_all
 JwtDenylist.destroy_all
 Restaurant.destroy_all
@@ -69,12 +67,13 @@ end
 puts "-----------------------"
 puts "------ ADDRESSES ------"
 puts "-----------------------"
+List = [75001, 75002, 75003, 75004, 75005, 75006, 75007, 75008, 75009, 75010, 75011, 75012, 75013, 75014, 75015, 75016, 75017, 75018, 75019, 75020]
 
 first_restaurant = Restaurant.first.id
 addresses = (1..200).map do
   address = Address.new(
     street: Faker::Address.street_name,
-    zipcode: ZIPCODE_LIST.sample,
+    zipcode: List.sample,
     town: Faker::Address.city,
     country: Faker::Address.country,
     restaurant_id: first_restaurant
